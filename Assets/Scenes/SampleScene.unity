@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 109948874}
   m_Layer: 0
   m_Name: Map
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -243,7 +243,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.15212338, y: 6.2825417e-10, z: -9.669756e-11, w: 0.98836154}
-  m_LocalPosition: {x: 0, y: 4.4056463, z: -7.6297355}
+  m_LocalPosition: {x: 0, y: 4.4056463, z: -7.3297353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -567,6 +567,8 @@ GameObject:
   - component: {fileID: 649074343}
   - component: {fileID: 649074342}
   - component: {fileID: 649074346}
+  - component: {fileID: 649074348}
+  - component: {fileID: 649074347}
   m_Layer: 0
   m_Name: PlayerModel
   m_TagString: Untagged
@@ -690,8 +692,34 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &649074347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649074341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe12fbed1a3e84d0bb0b1a146d033fee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 10
+  jumpForce: 50
+--- !u!114 &649074348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649074341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afde483bc4e204262a9d6530ca880e2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &674791886
 GameObject:
   m_ObjectHideFlags: 0
@@ -1048,7 +1076,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 1229987318}
+    TrackingTarget: {fileID: 649074345}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
@@ -1080,7 +1108,7 @@ Transform:
   m_GameObject: {fileID: 927865456}
   serializedVersion: 2
   m_LocalRotation: {x: 0.15212338, y: 6.28253e-10, z: -9.6690336e-11, w: 0.98836154}
-  m_LocalPosition: {x: 0, y: 4.4056463, z: -7.6297355}
+  m_LocalPosition: {x: 0, y: 4.4056463, z: -7.3297353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
