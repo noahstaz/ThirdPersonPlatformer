@@ -66,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(transform.position, moveDirection, out hit, 0.6f, groundLayer))
         {
             float angle = Vector3.Angle(hit.normal, Vector3.up);
-            return angle > 45f && angle < 135f; // Detect walls, not floors or ceilings
+            return angle > 45f && angle < 135f; // Detect walls
         }
         return false;
     }
