@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,16 +15,21 @@ public class PlayerMovement : MonoBehaviour
     private int jumpCount = 0;
     [SerializeField] private float jumpCooldown = 0.2f;
     private float jumpCooldownTimer = 0f;
-
-
+    [SerializeField] private float dashForce = 20f;
+    [SerializeField] private float dashDuration = 0.2f;
+    [SerializeField] private float dashCooldown = 1f;
+    private bool isDashing = false;
+    private float dashCooldownTimer = 0f;
 
     void Start()
     {
         rb = playerModel.GetComponent<Rigidbody>();
     }
 
-    public void Move(Vector3 direction)
+public void Move(Vector3 direction)
     {
+        if (isDashing) return; // Prevent movement while dashing
+
         // Stop applying force if player is touching a wall
         if (IsTouchingWall(direction))
         {
@@ -47,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (IsGrounded())
         {
-            jumpCount = 1;  // Reset jump count when landing
+            jumpCount = 1;
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
         else if (jumpCount < maxJumps && jumpCooldownTimer <= 0f)
@@ -88,12 +94,37 @@ public class PlayerMovement : MonoBehaviour
         if (!IsGrounded()) // Apply extra gravity when in the air
         {
             rb.linearVelocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-            jumpCooldownTimer -= Time.deltaTime; // Decrease cooldown timer
+            jumpCooldownTimer -= Time.deltaTime; // Decrease jump cooldown
         }
         else
         {
-            jumpCooldownTimer = jumpCooldown; // Reset cooldown when grounded
+            jumpCooldownTimer = jumpCooldown; // Reset jump cooldown when grounded
         }
+
+        // Dash Input Handling
+        if (Input.GetKeyDown(KeyCode.Return) && dashCooldownTimer <= 0f && !isDashing)
+        {
+            StartCoroutine(Dash());
+        }
+
+        // Dash Cooldown Timer
+        if (dashCooldownTimer > 0f)
+        {
+            dashCooldownTimer -= Time.deltaTime;
+        }
+    }
+
+    private IEnumerator Dash()
+    {
+        isDashing = true;
+        dashCooldownTimer = dashCooldown;
+
+        Vector3 dashDirection = playerModel.transform.forward;
+        rb.linearVelocity = dashDirection * dashForce; // Apply forward force
+
+        yield return new WaitForSeconds(dashDuration); // Wait for the duration of the dash
+
+        isDashing = false; // Allow movement again
     }
 
 }
