@@ -5,17 +5,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 5f;
     private Rigidbody rb;
-    private bool isGrounded;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform groundCheck;
+    private float groundCheckRadius = 0.3f;
+    [SerializeField] private GameObject playerModel;
 
-    private void Start()
+    void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = playerModel.GetComponent<Rigidbody>();
     }
 
     public void Move(Vector3 direction)
     {
         Vector3 targetVelocity = direction * moveSpeed;
-        targetVelocity.y = rb.linearVelocity.y;
+        targetVelocity.y = rb.linearVelocity.y; // Correct property name
         rb.linearVelocity = targetVelocity;
 
         if (direction != Vector3.zero)
@@ -27,18 +30,14 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jump()
     {
-        if (isGrounded)
+        if (IsGrounded())
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isGrounded = false;
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private bool IsGrounded()
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
+        return Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
     }
 }

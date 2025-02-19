@@ -5,9 +5,9 @@ public class InputManager : MonoBehaviour
     private PlayerMovement playerMovement;
     private Camera mainCamera;
 
-    private void Awake()
+    void Start()
     {
-        playerMovement = GetComponent<PlayerMovement>();
+        playerMovement = Object.FindFirstObjectByType<PlayerMovement>();
         mainCamera = Camera.main;
     }
 
@@ -31,12 +31,12 @@ public class InputManager : MonoBehaviour
 
         if (moveDirection.magnitude >= 0.1f)
         {
-            playerMovement.Move(moveDirection);
+            playerMovement?.Move(moveDirection);
         }
 
         if (jumpInput)
         {
-            playerMovement.Jump();
+            playerMovement?.Jump();
         }
     }
 }
