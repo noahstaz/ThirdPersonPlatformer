@@ -9,7 +9,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     private float groundCheckRadius = 0.3f;
     [SerializeField] private GameObject playerModel;
-    [SerializeField] private float fallMultiplier = 2.5f; // Adjust to make falling faster
+    [SerializeField] private float fallMultiplier = 2.5f;
+    [SerializeField] private int maxJumps = 2;
+    private int jumpCount = 0;
+    [SerializeField] private float jumpCooldown = 0.2f;
+    private float jumpCooldownTimer = 0f;
+
 
 
     void Start()
@@ -42,9 +47,16 @@ public class PlayerMovement : MonoBehaviour
     {
         if (IsGrounded())
         {
+            jumpCount = 1;  // Reset jump count when landing
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+        else if (jumpCount < maxJumps && jumpCooldownTimer <= 0f)
+        {
+            jumpCount++;
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
+
 
     private bool IsGrounded()
     {
@@ -73,9 +85,14 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (!IsGrounded()) // Apply extra gravity only when in the air
+        if (!IsGrounded()) // Apply extra gravity when in the air
         {
             rb.linearVelocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+            jumpCooldownTimer -= Time.deltaTime; // Decrease cooldown timer
+        }
+        else
+        {
+            jumpCooldownTimer = jumpCooldown; // Reset cooldown when grounded
         }
     }
 
